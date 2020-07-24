@@ -7,8 +7,8 @@ if [ ! -e $CONFIG ]; then
 	cp /config.ini /data
 fi
 
-brctl addbr virbr0
-ip link set dev virbr0 up
+#brctl addbr virbr0
+#ip link set dev virbr0 up
 if [ "${BRIDGE_ADDRESS}x" == "x" ]; then
   BRIDGE_ADDRESS=172.84.9.1/24
 fi
@@ -25,9 +25,9 @@ if [ "${BRIDGE_INTERFACE}x" == "x" ]; then
   BRIDGE_INTERFACE=eth0
 fi
 
-ip ad add ${BRIDGE_ADDRESS} dev virbr0
-iptables -t nat -A POSTROUTING -o ${BRIDGE_INTERFACE} -j MASQUERADE
+#ip ad add ${BRIDGE_ADDRESS} dev virbr0
+#iptables -t nat -A POSTROUTING -o ${BRIDGE_INTERFACE} -j MASQUERADE
 
-dnsmasq -i virbr0 -z -h --dhcp-range=${DHCP_START},${DHCP_END},4h
+#dnsmasq -i virbr0 -z -h --dhcp-range=${DHCP_START},${DHCP_END},4h
 dockerd --storage-driver=vfs --data-root=/data/docker/ &
 gns3server -A --config /data/config.ini
